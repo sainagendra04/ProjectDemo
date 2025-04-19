@@ -1,6 +1,28 @@
-from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
-from app.database.database_connection import Base
+from database.database_connection import Base
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# Define the User class first
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(50), unique=True, index=True)  
+    password = Column(String(255), nullable=False)
+    first_name = Column(String(50), nullable=True)  
+    last_name = Column(String(50), nullable=True)  
+    email = Column(String(100), unique=True, index=True)
+    full_name = Column(String(100), nullable=True)
+    is_active = Column(Boolean, default=True)
+
+    def set_password(self, password: str):
+        self.password = pwd_context.hash(password)
+
+    def verify_password(self, plain_password: str) -> bool:
+        return pwd_context.verify(plain_password, self.hashed_password)
 
 # Define the Book class first
 class Book(Base):
@@ -35,4 +57,4 @@ book_author = Table(
     Column("author_id", Integer, ForeignKey("authors.id", ondelete="CASCADE")),
 )
 
-__all__ = ['Book', 'Author', 'book_author']
+__all__ = ['Book', 'Author', 'book_author', 'User']
