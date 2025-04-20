@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 
 # Import models after Base is created
-from Models.models import *
+from app.Models.models import *
 
 DATABASE_URL = "mssql+pyodbc://SAINAGENDRA/SampleDB?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=yes"
 

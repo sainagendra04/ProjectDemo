@@ -1,6 +1,6 @@
 from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
-from database.database_connection import Base
+from app.database.database_connection import Base
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
